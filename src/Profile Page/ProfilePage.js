@@ -1,6 +1,7 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import classes from "./ProfilePage.module.css";
 import SignInContext from "../Context/SigninContext";
+import axios from "axios";
 
 const ProfilePage = () => {
   const nameRef = useRef();
@@ -31,6 +32,23 @@ const ProfilePage = () => {
     ).then((res) => {
       console.log(res);
     });
+
+    fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBtIWvTixlyXavVonxVrwMi4aIzYMWD1_A",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          idToken: signCtx.token,
+        }),
+      }
+    )
+      .then((res) => {
+        alert("your form is updated");
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   return (
     <section className={classes.contain}>
