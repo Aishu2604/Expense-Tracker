@@ -20,6 +20,10 @@ export const SignInContextProvider = (props) => {
     token: token,
     isLoggedIn: userIsLoggedIn,
     login: loginHandler,
+    preinfo: {
+      name: "",
+      url: "",
+    },
   };
 
   return (
