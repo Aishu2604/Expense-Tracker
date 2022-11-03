@@ -4,12 +4,18 @@ import FrontPage from "./Front Page/FrontPage";
 import SignUp from "./Sign up/Signup";
 import SignInContext from "./Context/SigninContext";
 import ProfilePage from "./Profile Page/ProfilePage";
+import VerifyEmail from "./VERIFY/VerifyEmail";
 
 function App() {
   const signCtx = useContext(SignInContext);
   const isLoggedIn = signCtx.isLoggedIn;
   return (
     <div>
+      {isLoggedIn && (
+        <Route path="/Verification">
+          <VerifyEmail />
+        </Route>
+      )}
       {isLoggedIn && (
         <Route path="/">
           <FrontPage />
