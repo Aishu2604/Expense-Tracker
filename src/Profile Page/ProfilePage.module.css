@@ -1,0 +1,45 @@
+.contain{
+    margin: 10rem auto;
+    height: 250px;
+    max-width: 20rem;
+    border-radius: 10px;
+    box-shadow:0 1px 4px rgba(219, 81, 81, 0.2);
+    background-color: rgb(176, 236, 106);
+    padding: 1rem;
+}
+.contain h1{
+    text-align: center;
+}
+
+.control {
+    margin-bottom: 0.5rem;
+}
+
+.control label{
+    height: 28px;
+  width: 90%;
+  position: relative;
+   border: 10px;
+  border-radius: 4px;
+  font-size: 24px;
+}
+
+.control input{
+    width: 90%;
+    height: 25px;
+}
+
+.action button{
+    cursor: pointer;
+  font: inherit;
+  color: white;
+  background-color: #f1c95b;
+  border: 1px solid #f1c95b;
+  border-radius: 4px;
+  padding: 0.5rem 2.5rem;   
+}
+
+.action button:hover{
+    background-color: #f1b50d;
+    border-color: #f1c95b;
+}
