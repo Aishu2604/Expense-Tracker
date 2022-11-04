@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./FrontPage.css";
 import { Link } from "react-router-dom";
+import SignInContext from "../Context/SigninContext";
 
 const FrontPage = () => {
+  const signCtx = useContext(SignInContext)
+  const logoutHandler = () => {
+    signCtx.logout()
+  }
   return (
     <div className="complete">
+      <button onClick={logoutHandler}>Logout</button>
       <Link to="/Verification">
         <button>Verify E-Mail</button>
       </Link>

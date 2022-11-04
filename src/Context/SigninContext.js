@@ -4,10 +4,12 @@ const SignInContext = React.createContext({
   token: "",
   isLoggedIn: false,
   login: (token) => {},
+  logout: () => {},
 });
 
 export const SignInContextProvider = (props) => {
-  const [token, setToken] = useState(null);
+  const initialToken = localStorage.getItem("token");
+  const [token, setToken] = useState(initialToken);
 
   const userIsLoggedIn = !!token;
 
@@ -16,10 +18,16 @@ export const SignInContextProvider = (props) => {
     setToken(token);
   };
 
+  const logoutHandler = () => {
+    setToken(null);
+    localStorage.removeItem("token");
+  };
+
   const contextValue = {
     token: token,
     isLoggedIn: userIsLoggedIn,
     login: loginHandler,
+    logout: logoutHandler,
     preinfo: {
       name: "",
       url: "",
