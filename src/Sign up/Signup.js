@@ -1,6 +1,7 @@
 import React, { useContext, useRef, useState } from "react";
 import classes from "./SignUp.module.css";
 import SignInContext from "../Context/SigninContext";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const emailInputRef = useRef();
@@ -90,6 +91,7 @@ const SignUp = () => {
           />
         </div>
         <div className={classes.actions}>
+          {!isLogin ? '' : <p><Link to="/forgotPassword">Forgot Password</Link></p>}
           <button>{isLogin ? "Login" : "Create Account"}</button>
           <button
             type="button"

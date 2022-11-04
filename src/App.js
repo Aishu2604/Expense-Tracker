@@ -5,6 +5,7 @@ import SignUp from "./Sign up/Signup";
 import SignInContext from "./Context/SigninContext";
 import ProfilePage from "./Profile Page/ProfilePage";
 import VerifyEmail from "./VERIFY/VerifyEmail";
+import ForgotPassword from "./Forget Password/ForgetPassword";
 
 function App() {
   const signCtx = useContext(SignInContext);
@@ -24,6 +25,11 @@ function App() {
       {!isLoggedIn && (
         <Route path="/login">
           <SignUp />
+        </Route>
+      )}
+      {!isLoggedIn && (
+        <Route path="/forgotPassword">
+          <ForgotPassword />
         </Route>
       )}
       {isLoggedIn && (
