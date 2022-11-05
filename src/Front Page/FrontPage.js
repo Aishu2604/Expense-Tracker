@@ -22,6 +22,8 @@ const FrontPage = () => {
       <div className="header1">
         <h4>Your Profile is Incomplete</h4>
         <Link to="/profile">Complete Now</Link>
+        <h4> Track Your Expenses</h4>
+        <Link to="/expense">Expense Tracker</Link>
       </div>
 
       <hr />
