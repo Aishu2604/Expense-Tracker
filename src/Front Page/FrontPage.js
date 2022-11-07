@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 import SignInContext from "../Context/SigninContext";
 
 const FrontPage = () => {
-  const signCtx = useContext(SignInContext)
+  const signCtx = useContext(SignInContext);
   const logoutHandler = () => {
-    signCtx.logout()
-  }
+    signCtx.logout();
+  };
   return (
     <div className="complete">
       <button onClick={logoutHandler}>Logout</button>
