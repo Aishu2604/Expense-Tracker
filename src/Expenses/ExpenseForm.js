@@ -1,70 +1,17 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classes from "./ExpenseForm.module.css";
 import Expenses from "./Expenses";
 
 const ExpenseForm = (props) => {
   const [Arr, setArr] = useState([]);
   const [expense, setExpense] = useState([]);
+  const [editId, setEditId] = useState(null);
+  const [render, setRender] = useState(0);
 
   const enteredAmountRef = useRef();
   const enteredDescribeRef = useRef();
   const enteredCategoryRef = useRef();
 
-  // const fetchExpenseHandler = useCallback(async () => {
-  //   setIsLoading(true);
-  //   setError(null);
-  //   try {
-  //     const response = await fetch(
-  //       "https://expense-tracker-f9b22-default-rtdb.firebaseio.com/expense.json"
-  //     );
-  //     if (!response.ok) {
-  //       throw new Error("Something went wrong ....Retrying");
-  //     }
-  //     const data = await response.json();
-  //     const loadedExpense = [];
-  //     for (const key in data) {
-  //       loadedExpense.push({
-  //         id: key,
-  //         amount: data[key].enteredAmount,
-  //         category: data[key].enteredCategory,
-  //         description: data[key].enteredDescribe,
-  //       });
-  //     }
-  //     setExpense(loadedExpense);
-  //   } catch (error) {
-  //     setError(error.message);
-  //   }
-  //   setIsLoading(false);
-  // }, []);
-
-  // useEffect(() => {
-  //   fetchExpenseHandler();
-  // }, [fetchExpenseHandler]);
-
-  // useEffect(() => {
-  //   const resdata = (res) => {
-  //     let arr = [];
-  //     for (const key in res.data) {
-  //       arr.push({
-  //         id: key,
-  //         amount: res.data[key].enteredAmount,
-  //         category: res.data[key].enteredCategory,
-  //         description: res.data[key].enteredDescribe,
-  //       });
-  //     }
-  //     setArr(arr);
-  //   };
-  //   fetch("https://expense-tracker-f9b22-default-rtdb.firebaseio.com/expense.json",
-  //   {
-
-  //       method: "GET",
-  //       body: JSON.stringify(),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     resdata
-  //   })
-  // },[]);
   useEffect(() => {
     fetch(
       "https://expense-tracker-f9b22-default-rtdb.firebaseio.com/expense.json"
@@ -73,8 +20,12 @@ const ExpenseForm = (props) => {
         res.json().then((data) => {
           let arr = [];
           for (let keys in data) {
-            arr.push(data[keys]);
-            console.log(data[keys]);
+            let obj = {
+              ...data[keys],
+              id: keys,
+            };
+            arr.push(obj);
+            console.log(keys);
             setExpense((pre) => [...arr]);
           }
         });
@@ -82,7 +33,38 @@ const ExpenseForm = (props) => {
         res.json().then((data) => console.log(data));
       }
     });
-  }, []);
+  }, [render]);
+
+  const editButtonHandler = (data) => {
+    console.log(data);
+    let filteredArr = Arr.filter((arr) => arr.Id !== data.Id);
+    setArr(filteredArr);
+    enteredAmountRef.current.value = data.amount;
+    enteredDescribeRef.current.value = data.description;
+    enteredCategoryRef.current.value = data.category;
+    setEditId(data.Id);
+    deleteButtonHandler(data.id);
+  };
+
+  const deleteButtonHandler = (data) => {
+    console.log(data);
+    fetch(
+      `https://expense-tracker-f9b22-default-rtdb.firebaseio.com/expense/${data}.json`,
+      {
+        method: "DELETE",
+      }
+    ).then((res) => {
+      if (res.ok) {
+        // alert("item deleted");
+        setRender((pre) => pre - 1);
+      } else {
+        res.json().then((data) => {
+          alert("error find");
+          console.log(data);
+        });
+      }
+    });
+  };
 
   const addExpenseHandler = (event) => {
     event.preventDefault();
@@ -106,7 +88,7 @@ const ExpenseForm = (props) => {
       }
     ).then((res) => {
       if (res.ok) {
-        setExpense((pre) => pre + 1);
+        setRender((pre) => pre + 1);
       } else {
         res.json().then((data) => alert(data.error.message));
       }
@@ -120,20 +102,6 @@ const ExpenseForm = (props) => {
       alert("Please Fill All the Input Field");
     } else {
       setArr([...Arr, expenseObj]);
-      // async function addExpensesHandler(expense) {
-      //   const response = await fetch(
-      //     "https://expense-tracker-f9b22-default-rtdb.firebaseio.com/expense.json",
-      //     {
-      //       method: "POST",
-      //       body: JSON.stringify(expense),
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //     }
-      //   );
-      //   const data = await response.json();
-      //   console.log(data);
-      // }
     }
 
     enteredAmountRef.current.value = "";
@@ -173,9 +141,16 @@ const ExpenseForm = (props) => {
         {expense.length > 0 &&
           expense.map((obj) => {
             {
-              console.log("Expenses");
+              console.log(obj);
             }
-            return <Expenses key={Math.random()} items={obj} />;
+            return (
+              <Expenses
+                key={Math.random()}
+                items={obj}
+                editButtonClicked={editButtonHandler}
+                deleteButtonClicked={deleteButtonHandler}
+              />
+            );
           })}
       </section>
     </div>

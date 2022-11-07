@@ -17,6 +17,18 @@ const Expenses = (props) => {
           <h3>Category:-</h3>
           <h2 className={classes.items}>{props.items.category}</h2>
         </span>
+        <button
+          onClick={() => props.editButtonClicked(props.items)}
+          className={classes.edit_button}
+        >
+          Edit
+        </button>
+        <button
+          onClick={() => props.deleteButtonClicked(props.items.id)}
+          className={classes.delete_button}
+        >
+          Delete
+        </button>
       </main>
     </div>
   );
