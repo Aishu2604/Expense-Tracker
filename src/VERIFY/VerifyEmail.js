@@ -1,10 +1,12 @@
 import React, { useContext } from "react";
 import SignInContext from "../Context/SigninContext";
 import { useHistory } from "react-router-dom";
-import "./VerifyEmail.css"
+import "./VerifyEmail.css";
+import { useSelector } from "react-redux";
 const VerifyEmail = () => {
-  const signCtx = useContext(SignInContext);
-  const history = useHistory()
+  // const signCtx = useContext(SignInContext);
+  const history = useHistory();
+  const token = useSelector((state) => state.auth.token);
 
   const verifyMailHandler = (e) => {
     e.preventDefault();
@@ -15,7 +17,7 @@ const VerifyEmail = () => {
         method: "POST",
         body: JSON.stringify({
           requestType: "VERIFY_EMAIL",
-          idToken: signCtx.token,
+          idToken: token,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -24,7 +26,7 @@ const VerifyEmail = () => {
     )
       .then((res) => {
         console.log(res);
-        history.replace("/profile");
+        history.replace("/");
       })
       .catch((err) => {
         console.log(err);

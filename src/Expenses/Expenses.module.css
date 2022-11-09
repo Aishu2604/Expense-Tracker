@@ -9,7 +9,7 @@
 
 }
 .main span h3{
-    padding: 0 30px;
+    padding: 0 10px;
     color: black;
 }
 
@@ -17,7 +17,7 @@
     display: flex;
     font-weight: inherit;
     color: white;
-    padding: 0 30px;
+    padding: 0 10px;
     margin: auto;
     font-style: italic;
 }

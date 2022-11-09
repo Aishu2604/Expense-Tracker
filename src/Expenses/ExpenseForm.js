@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import classes from "./ExpenseForm.module.css";
 import Expenses from "./Expenses";
+import { expenseAction } from "../store/expense-reducer";
+import { useDispatch, useSelector } from "react-redux";
 
 const ExpenseForm = (props) => {
   const [Arr, setArr] = useState([]);
+  const expenseArr = useSelector((state) => state.expense.expenses);
   const [expense, setExpense] = useState([]);
   const [editId, setEditId] = useState(null);
   const [render, setRender] = useState(0);
@@ -11,6 +14,7 @@ const ExpenseForm = (props) => {
   const enteredAmountRef = useRef();
   const enteredDescribeRef = useRef();
   const enteredCategoryRef = useRef();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetch(
@@ -25,8 +29,10 @@ const ExpenseForm = (props) => {
               id: keys,
             };
             arr.push(obj);
+            // dispatch(expenseAction.updateExpense(arr))
             console.log(keys);
             setExpense((pre) => [...arr]);
+            
           }
         });
       } else {
@@ -37,8 +43,9 @@ const ExpenseForm = (props) => {
 
   const editButtonHandler = (data) => {
     console.log(data);
-    let filteredArr = Arr.filter((arr) => arr.Id !== data.Id);
-    setArr(filteredArr);
+    let filteredArr = expenseArr.filter((arr) => arr.Id !== data.Id);
+    // setArr(filteredArr);
+    dispatch(expenseAction.updateExpense(filteredArr));
     enteredAmountRef.current.value = data.amount;
     enteredDescribeRef.current.value = data.description;
     enteredCategoryRef.current.value = data.category;
@@ -101,7 +108,7 @@ const ExpenseForm = (props) => {
     ) {
       alert("Please Fill All the Input Field");
     } else {
-      setArr([...Arr, expenseObj]);
+      dispatch(expenseAction.updateExpense([...expenseArr, expenseObj]));
     }
 
     enteredAmountRef.current.value = "";
@@ -109,7 +116,21 @@ const ExpenseForm = (props) => {
     enteredDescribeRef.current.value = "";
   };
 
-  console.log(Arr);
+  let premium;
+  console.log(expenseArr)
+  if (expenseArr.length > 0) {
+    let totalAmount = expenseArr.reduce((prev, current) => {
+      return prev + Number(current.amount);
+    }, 0);
+    console.log(totalAmount);
+    if (totalAmount > 10000) {
+      premium = true;
+    } else {
+      premium = false;
+    }
+  }
+
+  // console.log(Arr);
 
   return (
     <div>
@@ -135,6 +156,10 @@ const ExpenseForm = (props) => {
           <option value="other">Other</option>
         </select>
         <button>Submit</button>
+        {premium && (
+          <h4>Your expenses amount exceed more then $1000, go from premimum</h4>
+        )}
+        {premium && <button>Buy Premium</button>}
       </form>
       <section className={classes.section}>
         <h2 className={classes.heading}>Your Expenses</h2>
@@ -152,6 +177,7 @@ const ExpenseForm = (props) => {
               />
             );
           })}
+          
       </section>
     </div>
   );

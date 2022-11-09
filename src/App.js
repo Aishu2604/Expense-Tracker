@@ -7,25 +7,13 @@ import ProfilePage from "./Profile Page/ProfilePage";
 import VerifyEmail from "./VERIFY/VerifyEmail";
 import ForgotPassword from "./Forget Password/ForgetPassword";
 import ExpenseForm from "./Expenses/ExpenseForm";
+import { useSelector } from "react-redux";
 
 function App() {
-  const signCtx = useContext(SignInContext);
-  const isLoggedIn = signCtx.isLoggedIn;
+  // const signCtx = useContext(SignInContext);
+  // const isLoggedIn = signCtx.isLoggedIn;
 
-  // async function addExpensesHandler(expense) {
-  //   const response = await fetch(
-  //     "https://expense-tracker-f9b22-default-rtdb.firebaseio.com/expense.json",
-  //     {
-  //       method: "POST",
-  //       body: JSON.stringify(expense),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   const data = await response.json();
-  //   console.log(data);
-  // }
+  const isLoggedIn = useSelector(state => state.auth.token)
 
   return (
     <div>

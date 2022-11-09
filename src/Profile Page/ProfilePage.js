@@ -1,12 +1,15 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import classes from "./ProfilePage.module.css";
-import SignInContext from "../Context/SigninContext";
-import axios from "axios";
+import { useSelector } from "react-redux";
 
 const ProfilePage = () => {
   const nameRef = useRef();
   const profileRef = useRef();
-  const signCtx = useContext(SignInContext);
+  const [store, setStore] = useState();
+  const [email, setEmail] = useState()
+  const [url, setUrl] = useState()
+  // const signCtx = useContext(SignInContext);
+  const token = useSelector((state) => state.auth.token);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -19,7 +22,7 @@ const ProfilePage = () => {
       {
         method: "POST",
         body: JSON.stringify({
-          idToken: signCtx.token,
+          idToken: token,
           displayName: name,
           photoUrl: profile,
           deleteAttribute: "Display_Name",
@@ -31,6 +34,7 @@ const ProfilePage = () => {
       }
     ).then((res) => {
       console.log(res);
+      setStore(res);
     });
   };
   useEffect(() => {
@@ -39,16 +43,18 @@ const ProfilePage = () => {
       {
         method: "POST",
         body: JSON.stringify({
-          idToken: signCtx.token,
+          idToken: token,
         }),
       }
     )
       .then((res) => {
         if (res.ok) {
+          // console.log(res.json());
           alert("your form is updated");
           res.json().then((data) => {
-            signCtx.preinfo.name = data.users[0].email;
-            signCtx.preinfo.url = data.users[0].photoUrl;
+            console.log(data);
+             setEmail(data.users[0].email);
+            setUrl(data.users[0].photoUrl);
           });
         } else {
           res.json().then((data) => console.log(data));
@@ -57,7 +63,7 @@ const ProfilePage = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [store]);
   return (
     <section className={classes.contain}>
       <header>
@@ -72,7 +78,7 @@ const ProfilePage = () => {
               type="text"
               required
               ref={nameRef}
-              defaultValue={signCtx.preinfo.name}
+               defaultValue={email}
               // value={signCtx.preinfo.name}
             ></input>
           </div>
@@ -83,9 +89,8 @@ const ProfilePage = () => {
               type="text"
               required
               ref={profileRef}
-              defaultValue={signCtx.preinfo.url}
+              defaultValue={url}
               // value={signCtx.preinfo.url}
-              
             ></input>
           </div>
           <div className={classes.action}>

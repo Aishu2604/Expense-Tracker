@@ -1,16 +1,23 @@
 import React, { useContext } from "react";
 import "./FrontPage.css";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import SignInContext from "../Context/SigninContext";
+import { authAction } from "../store/auth-reducer";
+import { useDispatch, useSelector } from "react-redux";
 
 const FrontPage = () => {
-  const signCtx = useContext(SignInContext);
+  const isLoggedIn = useSelector((state) => state.auth.token);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  // const signCtx = useContext(SignInContext);
   const logoutHandler = () => {
-    signCtx.logout();
+    // signCtx.logout();
+    dispatch(authAction.removeExpenseToken());
+    history.replace("/login");
   };
   return (
     <div className="complete">
-      <button onClick={logoutHandler}>Logout</button>
+      {isLoggedIn && <button onClick={logoutHandler}>Logout</button>}
       <Link to="/Verification">
         <button>Verify E-Mail</button>
       </Link>

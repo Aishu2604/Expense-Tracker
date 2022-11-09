@@ -2,6 +2,7 @@
     width: 50%;
     margin: auto;
     margin-bottom: 15%;
+
 }
 
 .select{
@@ -12,5 +13,5 @@
 .heading{
     display: flex;
     justify-content: center;
-    color: red;
+    color: gold;
 }
