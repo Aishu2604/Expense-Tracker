@@ -1,17 +1,36 @@
-.section{
-    width: 50%;
-    margin: auto;
-    margin-bottom: 15%;
-
+.section {
+  width: 50%;
+  margin: auto;
+  margin-bottom: 15%;
 }
 
-.select{
-    padding: 1.5%;
-    margin-top: 9px;
+.select {
+  padding: 1.5%;
+  margin-top: 9px;
 }
 
-.heading{
-    display: flex;
-    justify-content: center;
-    color: gold;
+.heading {
+  display: flex;
+  justify-content: center;
+  color: royalblue;
+}
+
+.premium_button {
+  border-color: white;
+  font-weight: 750;
+  padding: 2%;
+  width: 30rem;
+  margin: auto;
+  margin-top: 5%;
+  font-size: 18px;
+  background-color: goldenrod;
+  border-radius: 10px;
+  align-content: center;
+}
+.light_Mode {
+  background-color: lightgreen;
+}
+
+.dark_Mode {
+  background-color: aqua;
 }

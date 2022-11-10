@@ -1,19 +1,25 @@
-import React, { useContext } from "react";
+import React from "react";
 import "./FrontPage.css";
 import { Link, useHistory } from "react-router-dom";
-import SignInContext from "../Context/SigninContext";
 import { authAction } from "../store/auth-reducer";
 import { useDispatch, useSelector } from "react-redux";
+import { themeAction } from "../store/theme-reducer";
 
 const FrontPage = () => {
   const isLoggedIn = useSelector((state) => state.auth.token);
+  const premium = useSelector((state) => state.theme.onPremium);
+  const theme = useSelector((state) => state.theme.theme);
   const dispatch = useDispatch();
   const history = useHistory();
-  // const signCtx = useContext(SignInContext);
+
+  console.log(theme);
   const logoutHandler = () => {
-    // signCtx.logout();
     dispatch(authAction.removeExpenseToken());
     history.replace("/login");
+  };
+
+  const themeChangeHandler = () => {
+    dispatch(themeAction.toggleTheme());
   };
   return (
     <div className="complete">
@@ -21,6 +27,12 @@ const FrontPage = () => {
       <Link to="/Verification">
         <button>Verify E-Mail</button>
       </Link>
+      {console.log(premium)}
+      {premium && (
+        <button onClick={themeChangeHandler}>
+          {theme ? "light mode" : "dark mode"}
+        </button>
+      )}
       <div className="header">
         <Link to="/"></Link>
         <h4>Welcome To Expense Tracker</h4>

@@ -1,46 +1,45 @@
-.main{
-    display: flex;
-    justify-content: center;
-    border-bottom: 2px solid aliceblue;
+.main {
+  display: flex;
+  justify-content: center;
+  border-bottom: 2px solid aliceblue;
 }
 
-.main span{
-    display: flex;
-
+.main span {
+  display: flex;
 }
-.main span h3{
-    padding: 0 10px;
-    color: black;
-}
-
-.items{
-    display: flex;
-    font-weight: inherit;
-    color: white;
-    padding: 0 10px;
-    margin: auto;
-    font-style: italic;
+.main span h3 {
+  padding: 0 10px;
+  color: black;
 }
 
-.heading{
-    display: flex;
-    justify-content: center;
-    color: #ff000c;
+.items {
+  display: flex;
+  font-weight: inherit;
+  color: blueviolet;
+  padding: 0 10px;
+  margin: auto;
+  font-style: italic;
 }
 
-.edit_button{
-    height: 30px;
-    margin-top: 3%;
-    margin-left: 1%;
-    margin-right: 2%;
-    background-color: rgba(0, 128, 0, 0.76);
-    border-radius: 5px;
+.heading {
+  display: flex;
+  justify-content: center;
+  color: #ff000c;
 }
-.delete_button{
-    height: 30px;
-    margin-top: 3%;
-    margin-left: 1%;
-    margin-right: 2%;
-    background-color: rgba(255, 0, 0, 0.801);
-    border-radius: 5px;
+
+.edit_button {
+  height: 30px;
+  margin-top: 3%;
+  margin-left: 1%;
+  margin-right: 2%;
+  background-color: rgba(0, 128, 0, 0.76);
+  border-radius: 5px;
+}
+.delete_button {
+  height: 30px;
+  margin-top: 3%;
+  margin-left: 1%;
+  margin-right: 2%;
+  background-color: rgba(255, 0, 0, 0.801);
+  border-radius: 5px;
 }

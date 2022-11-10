@@ -1,9 +1,7 @@
-
-.header1{
-    display: flex;
-    align-items: flex-end;
+.header1 {
+  display: flex;
+  align-items: flex-end;
 }
-.complete{
-    background-color: white;
-    
+.complete {
+  background-color: white;
 }

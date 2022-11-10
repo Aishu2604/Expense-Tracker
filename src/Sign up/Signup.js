@@ -1,6 +1,5 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import classes from "./SignUp.module.css";
-import SignInContext from "../Context/SigninContext";
 import { Link } from "react-router-dom";
 import { authAction } from "../store/auth-reducer";
 import { useDispatch } from "react-redux";
@@ -9,10 +8,9 @@ const SignUp = () => {
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const confirmpasswordInputRef = useRef();
-  // const signCtx = useContext(SignInContext);
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const modeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -60,8 +58,7 @@ const SignUp = () => {
         }
       })
       .then((data) => {
-        // signCtx.login(data.idToken);
-        dispatch(authAction.getExpenseToken(data.idToken))
+        dispatch(authAction.getExpenseToken(data.idToken));
       })
       .catch((err) => {
         alert(err.message);
@@ -95,7 +92,13 @@ const SignUp = () => {
           />
         </div>
         <div className={classes.actions}>
-          {!isLogin ? '' : <p><Link to="/forgotPassword">Forgot Password</Link></p>}
+          {!isLogin ? (
+            ""
+          ) : (
+            <p>
+              <Link to="/forgotPassword">Forgot Password</Link>
+            </p>
+          )}
           <button>{isLogin ? "Login" : "Create Account"}</button>
           <button
             type="button"

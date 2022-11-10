@@ -3,9 +3,13 @@ import classes from "./ExpenseForm.module.css";
 import Expenses from "./Expenses";
 import { expenseAction } from "../store/expense-reducer";
 import { useDispatch, useSelector } from "react-redux";
+import { themeAction } from "../store/theme-reducer";
 
 const ExpenseForm = (props) => {
-  const [Arr, setArr] = useState([]);
+  const mode = useSelector((state) => state.theme.theme);
+  console.log(mode);
+  const premium = useSelector((state) => state.theme.onPremium);
+  const premiumButton = useSelector((state) => state.expense.premiumButton);
   const expenseArr = useSelector((state) => state.expense.expenses);
   const [expense, setExpense] = useState([]);
   const [editId, setEditId] = useState(null);
@@ -29,10 +33,9 @@ const ExpenseForm = (props) => {
               id: keys,
             };
             arr.push(obj);
-            // dispatch(expenseAction.updateExpense(arr))
             console.log(keys);
             setExpense((pre) => [...arr]);
-            
+            console.log(arr);
           }
         });
       } else {
@@ -44,7 +47,6 @@ const ExpenseForm = (props) => {
   const editButtonHandler = (data) => {
     console.log(data);
     let filteredArr = expenseArr.filter((arr) => arr.Id !== data.Id);
-    // setArr(filteredArr);
     dispatch(expenseAction.updateExpense(filteredArr));
     enteredAmountRef.current.value = data.amount;
     enteredDescribeRef.current.value = data.description;
@@ -85,8 +87,6 @@ const ExpenseForm = (props) => {
       description: enteredDescribe,
       category: enteredCategory,
     };
-    // props.onAddExpense(expenseObj);
-
     fetch(
       "https://expense-tracker-f9b22-default-rtdb.firebaseio.com/expense.json",
       {
@@ -115,26 +115,45 @@ const ExpenseForm = (props) => {
     enteredCategoryRef.current.value = "";
     enteredDescribeRef.current.value = "";
   };
-
-  let premium;
-  console.log(expenseArr)
-  if (expenseArr.length > 0) {
-    let totalAmount = expenseArr.reduce((prev, current) => {
+  console.log(expense);
+  console.log(expenseArr);
+  if (expense.length > 0) {
+    let totalAmount = expense.reduce((prev, current) => {
       return prev + Number(current.amount);
     }, 0);
     console.log(totalAmount);
     if (totalAmount > 10000) {
-      premium = true;
+      dispatch(expenseAction.setPremiumButton());
     } else {
-      premium = false;
+      dispatch(expenseAction.unSetPremiumButton());
+      dispatch(themeAction.offTheme());
+      dispatch(themeAction.offPremium());
     }
   }
 
-  // console.log(Arr);
+  const premiumHandler = (event) => {
+    event.preventDefault();
+    dispatch(themeAction.onTheme());
+    dispatch(themeAction.onPremium());
+  };
 
+  function makeCSV(data) {
+    let arr1 = data.map((obj) => {
+      let arr2 = [obj.amount, obj.category, obj.description];
+      return arr2.join();
+    });
+    arr1.unshift(["AMOUNT", "CATEGORY", "DESCRIPTION"]);
+    return arr1.join("\n");
+  }
+  const blob = new Blob([makeCSV(expense)]);
+
+  // console.log(Arr);
+  // const themeMode = mode ? "light_Mode" : "dark_Mode";
+  // console.log(typeof themeMode)
   return (
-    <div>
-      <form onSubmit={addExpenseHandler}>
+    <div style={{ backgroundColor: mode ? "lightblue" : "lightgreen" }}>
+      {/* // <div className={mode === false ? classes.light_Mode : ""}> */}
+      <div>
         <h1>Expenses Form</h1>
         <label htmlFor="money">Amount</label>
         <input ref={enteredAmountRef} type="number" id="money"></input>
@@ -155,12 +174,27 @@ const ExpenseForm = (props) => {
           <option value="travel">Travel</option>
           <option value="other">Other</option>
         </select>
-        <button>Submit</button>
-        {premium && (
-          <h4>Your expenses amount exceed more then $1000, go from premimum</h4>
-        )}
-        {premium && <button>Buy Premium</button>}
-      </form>
+        <button onClick={addExpenseHandler}>Submit</button>
+        <div>
+          {premiumButton && (
+            <button onClick={premiumHandler} className={classes.premium_button}>
+              {premium
+                ? "You Subscribe to Premium"
+                : "Your Total Expenses Amount Exceed More Than $10000, Let's Go For Premium"}
+            </button>
+          )}
+          {premium && (
+            <button onClick={() => dispatch(themeAction.toggleTheme())}>
+              Change Mode
+            </button>
+          )}
+          {expense.length > 0 && premium && (
+            <a href={URL.createObjectURL(blob)} download="Expense.csv">
+              Download Expense
+            </a>
+          )}
+        </div>
+      </div>
       <section className={classes.section}>
         <h2 className={classes.heading}>Your Expenses</h2>
         {expense.length > 0 &&
@@ -177,7 +211,6 @@ const ExpenseForm = (props) => {
               />
             );
           })}
-          
       </section>
     </div>
   );

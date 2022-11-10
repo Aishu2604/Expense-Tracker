@@ -6,8 +6,8 @@ const ProfilePage = () => {
   const nameRef = useRef();
   const profileRef = useRef();
   const [store, setStore] = useState();
-  const [email, setEmail] = useState()
-  const [url, setUrl] = useState()
+  const [email, setEmail] = useState();
+  const [url, setUrl] = useState();
   // const signCtx = useContext(SignInContext);
   const token = useSelector((state) => state.auth.token);
 
@@ -53,7 +53,7 @@ const ProfilePage = () => {
           alert("your form is updated");
           res.json().then((data) => {
             console.log(data);
-             setEmail(data.users[0].email);
+            setEmail(data.users[0].email);
             setUrl(data.users[0].photoUrl);
           });
         } else {
@@ -78,7 +78,7 @@ const ProfilePage = () => {
               type="text"
               required
               ref={nameRef}
-               defaultValue={email}
+              defaultValue={email}
               // value={signCtx.preinfo.name}
             ></input>
           </div>
